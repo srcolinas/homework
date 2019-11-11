@@ -35,5 +35,5 @@ Now you could send your students `testfile_homework.py` and remove the original 
 
 ## Future work
 - Support for defining homeworks out of jupyter notebooks
-- Install the library via pip
+- Automatic grading
 - Perhaps something you want to suggest!
