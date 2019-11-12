@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="homework",
-    version="0.0.3",
+    version="0.0.4",
     author="Sebastian Rodriguez Colina",
     author_email="srcolinas@gmail.com",
     description="A package to create programming assignments",
