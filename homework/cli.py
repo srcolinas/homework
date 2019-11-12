@@ -1,8 +1,18 @@
 import os
+import re
 
 import cryptography
+from tqdm import tqdm
 
 from homework.homework import *
+
+def _get_iterable_from_directory(directory, regexp=None):
+    if regexp is not None:
+        regexp = re.compile(regexp)
+        iterable = (filename for filename in os.listdir(directory) if regexp.match(filename))
+    else:
+        iterable = os.listdir(directory)
+    return iterable
 
 class _CLI:
     def make(self, filepath, key=None, replace_source=False):
@@ -42,6 +52,45 @@ class _CLI:
         """
         cipher = cryptography.fernet.Fernet(key.encode())
         uncover_homework(filepath, cipher)
+
+    def make_many(self, directory, regexp=None, **kwargs):
+        """Make several homework files from a given directory.
+
+        Args:
+            directory (str): directory from which to extract files to make homeworks.
+            regexp (str or None): regular expression to find files in the directory. This may help
+                to make faster execution, because irrelevant files will be ignored.
+            **kwargs: other keyword arguments will be forwarded to the `make` method.
+
+        Returns:
+            (str): The key used for encryption.
+        """
+        iterable = _get_iterable_from_directory(directory, regexp)
+        key = kwargs.pop('key', cryptography.fernet.Fernet.generate_key())
+        for filename in tqdm(iterable):
+            _ = self.make(os.path.join(directory, filename), key=key, **kwargs)
+        return key
+
+
+    def uncover_many(self, directory, key, regexp=None, **kwargs):
+        """Uncover several homework files from a given directory.
+
+        Args:
+            directory (str): directory from which to extract files to uncover homeworks.
+            regexp (str or None): regular expression to find files in the directory. This may help
+                to make faster execution, because irrelevant files will be ignored.
+            **kwargs: other keyword arguments will be forwarded to the `make` method.
+
+        Returns:
+            (str): The key used for encryption.
+        """
+        iterable = _get_iterable_from_directory(directory, regexp)
+        for filename in tqdm(iterable):
+            try:
+                self.uncover(os.path.join(directory, filename), key, **kwargs)
+            except cryptography.fernet.InvalidToken:
+                continue
+
 
 def main():
     fire.Fire(_CLI)
