@@ -12,8 +12,8 @@ example:
 
 ```python
 ## homework:replace:on
-# dw = 
-# w = 
+#.dw = 
+#.w = 
 dw = compute_gradients()
 w -= alpha * dw
 ## homework:replace:off

@@ -30,6 +30,11 @@ import re
 import fire
 import cryptography.fernet
 
+def make_derivate_filepath(filepath, tag='_'):
+    fpath, ext = os.path.splitext(filepath)
+    fpath += tag + ext
+    return fpath
+
 def make_homework(filepath, cipher, fh=None, fs=None):
     """Convert a text file into a homework.
 
@@ -50,12 +55,10 @@ def make_homework(filepath, cipher, fh=None, fs=None):
             for filepath.
     """
     if fs is None:
-        fs, ext = os.path.splitext(filepath)
-        fs += '_solution' + ext
+        fs = make_derivate_filepath(filepath, tag='_solution')
 
     if fh is None:
-        fh, ext = os.path.splitext(filepath)
-        fh += '_homework' + ext
+        fh = make_derivate_filepath(filepath, tag='_homework')
 
     cmd_exp = re.compile('[ \t]+## homework:[a-z]+:[a-z]+[ \t]*\n', re.IGNORECASE)
     comment_exp = re.compile('[ \t]+#.')
@@ -107,8 +110,7 @@ def uncover_homework(filepath, cipher, fs=None):
             cryptography.fernet.Fernet.
     """
     if fs is None:
-        fs, ext = os.path.splitext(filepath)
-        fs += '_uncovered' + ext
+        fs = make_derivate_filepath(filepath, tag='_uncovered')
     
     with open(filepath, 'rb') as f, open(fs, 'wb') as s:
         for line in f:
@@ -121,43 +123,3 @@ def uncover_homework(filepath, cipher, fs=None):
                     raise
             else:
                 s.write(line)
-
-
-class _CLI:
-    def make(self, filepath, key=None):
-        """Creates a homework from a script.
-
-        A homework is defined as two files, one with some lines changed according
-        to the language defined by the library (see the docs) and another one with
-        the solution. The solution file is encrypted so that the student's do not
-        have it. Encryption is achieved using `cryptography.fernet.Fernet`.
-        
-        Args:
-            filepath (str): The file to make the homework from.
-            key (str): The key to use for encryption. If None (default) this
-                function will create a key.
-
-        Return:
-            (str): The key used for encryption.
-
-        """
-        if key is None:
-            key = cryptography.fernet.Fernet.generate_key()
-
-        cipher = cryptography.fernet.Fernet(key)
-        make_homework(filepath, cipher=cipher)
-        return key.decode()
-
-    def uncover(self, filepath, key):
-        """Uncovers the encrypted solution of a homework.
-
-        Args:
-            filepath (str): Filepath to the encrypted solution.
-            key (str): Key used to encrypt the solution.
-        """
-        cipher = cryptography.fernet.Fernet(key.encode())
-        uncover_homework(filepath, cipher)
-
-
-if __name__ == '__main__':
-    fire.Fire(_CLI)
