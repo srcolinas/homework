@@ -1,0 +1,38 @@
+[project]
+name = "homework"
+version = "0.1.0"
+description = "A package to create programming assignments"
+readme = "README.md"
+authors = [
+  {name = "Sebastian Rodriguez Colina", email = "srcolinas@gmail.com"},
+]
+maintainers = [
+  {name = "Sebastian Rodriguez Colina", email = "srcolinas@gmail.com"}
+]
+license = "MIT"
+keywords = ["homework", "assignments"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Teachers",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "cryptography>=44.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.14.1",
+    "pytest>=8.3.4",
+    "ruff>=0.9.2",
+]
+
+[project.scripts]
+homework = "src._cli"
+
+[project.urls]
+Homepage = "https://github.com/srcolinas/homework"
+
+[tool.pytest.ini_options]
+pythonpath = "src"
