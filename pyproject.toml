@@ -9,7 +9,7 @@ authors = [
 maintainers = [
   {name = "Sebastian Rodriguez Colina", email = "srcolinas@gmail.com"}
 ]
-license = "MIT"
+license = { text = "MIT"}
 keywords = ["homework", "assignments"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -17,9 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 requires-python = ">=3.12"
-dependencies = [
-    "cryptography>=44.0.0",
-]
+dependencies = []
 
 [dependency-groups]
 dev = [
@@ -29,7 +27,7 @@ dev = [
 ]
 
 [project.scripts]
-homework = "src._cli"
+homework = "homework.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/srcolinas/homework"
