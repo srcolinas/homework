@@ -7,7 +7,7 @@ from . import prepare
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("source_dir", type=pathlib.Path)
-    parser.add_argument("-p", "--pattern", default=".*")
+    parser.add_argument("-p", "--pattern", default=".*\.(py|json|csv|yaml|yml)")
     args = parser.parse_args()
 
 
