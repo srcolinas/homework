@@ -1,3 +1,5 @@
+import pathlib
+
 import pytest
 
 from homework import parser
@@ -13,21 +15,27 @@ w -= alpha * dw
 """)
 
 
-def test_lines_with_outline_are_replaced():
-    source = """print("implementation of gradient descent")
-## homework:replace:on
-#.dw =
-#.w =
-dw = compute_gradients()
-w = w - alpha * dw
-## homework:replace:off
-"""
-    output = parser.parse(source)
-    assert (
-        output
-        == """print("implementation of gradient descent")
-## homework:start
-dw =
-w =
-## homework:end"""
-    )
+def test_reference_files(test_files: list[tuple[pathlib.Path, pathlib.Path]]):
+    for source, expected_file in test_files:
+        result = parser.parse(source.read_text())
+        expected = expected_file.read_text()
+        assert result == expected
+
+
+@pytest.fixture
+def test_files(
+    request: pytest.FixtureRequest,
+) -> list[tuple[pathlib.Path, pathlib.Path]]:
+    data_dir = pathlib.Path(request.module.__file__).parent / "data"
+
+    files = []
+    for source in data_dir.rglob("*"):
+        if source.is_dir():
+            continue
+
+        if "_homework" not in source.name:
+            files.append(
+                (source, source.with_name(source.stem + f"_homework{source.suffix}"))
+            )
+
+    return files

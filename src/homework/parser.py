@@ -7,14 +7,18 @@ def parse(source: str) -> str:
     with the hints provided within speciall delimited
     sections.
     """
-    output = ""
+    output = []
     lines = iter(source.splitlines())
     for line in lines:
         if line.endswith("## homework:replace:on"):
-            output += "\n".join(_group_task(line, lines))
+            buffer = _group_task(line, lines)
+            for b in buffer:
+                output.append(b)
             continue
-        output += line + "\n"
-    return output
+        output.append(line)
+    if source.endswith("\n"):
+        output.append("")
+    return "\n".join(output)
 
 
 def _group_task(first: str, lines: Iterable[str]) -> list[str]:
@@ -22,7 +26,7 @@ def _group_task(first: str, lines: Iterable[str]) -> list[str]:
     buffer = [indentation + "## homework:start"]
     for line in lines:
         if line.endswith("## homework:replace:off"):
-            buffer.append("## homework:end")
+            buffer.append(indentation + "## homework:end")
             return buffer
         if line.lstrip().startswith("#."):
             buffer.append(indentation + line.split("#.")[-1])
