@@ -20,3 +20,29 @@ dw =
 w = 
 ## homework:end
 ```
+
+You can also create a delete block, which will produce output removing any existing code, for example, the code:
+
+```python
+class A:
+    def public(self, key: str) -> bool:
+        ## homework:replace:on
+        return self._private(key) is not None
+        ## homework:replace:off
+
+    ## homework:delete:on
+    def _private(self, key: str) -> str | None:
+        if key != "hello"
+            return None
+        return key
+    ## homework:delete:off
+```
+
+will result in
+
+```python
+class A:
+    def public(self, key: str) -> bool:
+        ## homework:replace:on
+        ## homework:replace:off
+```
