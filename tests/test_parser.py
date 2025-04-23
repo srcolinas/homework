@@ -1,4 +1,5 @@
 import pathlib
+from typing import Iterator
 
 import pytest
 
@@ -15,27 +16,19 @@ w -= alpha * dw
 """)
 
 
-def test_reference_files(test_files: list[tuple[pathlib.Path, pathlib.Path]]):
-    for source, expected_file in test_files:
-        result = parser.parse(source.read_text())
-        expected = expected_file.read_text()
-        assert result == expected
+def test_reference_files(test_files: tuple[pathlib.Path, pathlib.Path]):
+    source, target = test_files
+    result = parser.parse(source.read_text())
+    expected = target.read_text()
+    assert result == expected
 
 
-@pytest.fixture
+@pytest.fixture(params=["sample_0.py", "sample_1.py", "sample_2.py"])
 def test_files(
     request: pytest.FixtureRequest,
-) -> list[tuple[pathlib.Path, pathlib.Path]]:
+) -> Iterator[tuple[pathlib.Path, pathlib.Path]]:
     data_dir = pathlib.Path(request.module.__file__).parent / "data"
-
-    files = []
-    for source in data_dir.rglob("*"):
-        if source.is_dir():
-            continue
-
-        if "_homework" not in source.name:
-            files.append(
-                (source, source.with_name(source.stem + f"_homework{source.suffix}"))
-            )
-
-    return files
+    name: str = request.param
+    source = data_dir / name
+    target = source.with_name(source.stem + f"_homework{source.suffix}")
+    yield source, target

@@ -10,23 +10,42 @@ def parse(source: str) -> str:
     output = []
     lines = iter(source.splitlines())
     for line in lines:
-        if line.endswith("## homework:replace:on"):
-            buffer = _group_task(line, lines)
-            for b in buffer:
-                output.append(b)
+        markers = _get_markers(line)
+        if markers is None:
+            output.append(line)
             continue
-        output.append(line)
+        last, header, footer = markers
+        buffer = _group(lines, first=line, last=last, header=header, footer=footer)
+        output.extend(buffer)
     if source.endswith("\n"):
         output.append("")
     return "\n".join(output)
 
 
-def _group_task(first: str, lines: Iterable[str]) -> list[str]:
+def _get_markers(line: str) -> tuple[str, str | None, str | None] | None:
+    if line.endswith("## homework:replace:on"):
+        return "## homework:replace:off", "## homework:start", "## homework:end"
+    if line.endswith("## homework:delete:on"):
+        return "## homework:delete:off", None, None
+
+
+def _group(
+    lines: Iterable[str],
+    *,
+    first: str,
+    last: str,
+    header: str | None,
+    footer: str | None,
+) -> list[str]:
     indentation = first.split("## homework")[0]
-    buffer = [indentation + "## homework:start"]
+    buffer = [""]
+    if header is not None:
+        buffer[0] += indentation + header
     for line in lines:
-        if line.endswith("## homework:replace:off"):
-            buffer.append(indentation + "## homework:end")
+        if line.endswith(last):
+            buffer.append("")
+            if footer is not None:
+                buffer[-1] += indentation + footer
             return buffer
         if line.lstrip().startswith("#."):
             buffer.append(indentation + line.split("#.")[-1])
