@@ -1,0 +1,10 @@
+repos:
+  - repo: local
+    hooks:
+      - id: lint
+        name: lint
+        description: 'Runs linter'
+        entry: bash -c 'make lint'
+        language: system
+        pass_filenames: false
+      
