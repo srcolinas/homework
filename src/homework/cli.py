@@ -10,7 +10,11 @@ def main() -> None:
     parser.add_argument("-e", "--extensions", default=None, type=pathlib.Path, help="")
     parser.add_argument("-c", "--copy-unnafected", default=False, action="store_true")
     parser.add_argument(
-        "-i", "--ignore", nargs="*", help="Patterns to ignore", default=[".git", "__pycache__", "*.pyc"]
+        "-i",
+        "--ignore",
+        nargs="*",
+        help="Patterns to ignore",
+        default=[".git", "__pycache__", "*.pyc"],
     )
     args = parser.parse_args()
 
