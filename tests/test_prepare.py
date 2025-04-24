@@ -38,7 +38,7 @@ w =
     )
 
 
-def test_handles_pattern_from_source_dir(tmp_path: pathlib.Path):
+def test_handles_files_with_extensions_from_source_dir(tmp_path: pathlib.Path):
     (tmp_path / "main.py").touch()
     (tmp_path / "first.rs").touch()
     subdir = tmp_path / "subdir"
@@ -73,3 +73,22 @@ dw =
 w =
 ## homework:end"""
     )
+
+
+def test_copies_unaffected_files_when_flag_is_given(tmp_path: pathlib.Path):
+    (tmp_path / "main.py").touch()
+    (tmp_path / "first.rs").touch()
+    subdir = tmp_path / "subdir"
+    subdir.mkdir()
+    (subdir / "module.py").touch()
+    (subdir / "data.json").touch()
+
+    homework_dir = prepare.prepare(
+        tmp_path,
+        extensions={".py": ("", ""), ".json": ("", "")},
+        copy_unaffected_files=True,
+    )
+    assert (homework_dir / "main.py").exists()
+    assert (homework_dir / "subdir" / "module.py").exists()
+    assert (homework_dir / "subdir" / "data.json").exists()
+    assert (homework_dir / "first.rs").exists()
