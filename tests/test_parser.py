@@ -6,7 +6,7 @@ import pytest
 from homework import parser, prepare
 
 
-def test_ValueError_if_task_never_closes():
+def test_ValueError_if_task_never_closes() -> None:
     with pytest.raises(ValueError):
         parser.parse(
             """## homework:replace:on
@@ -16,11 +16,11 @@ dw = compute_gradients()
 w -= alpha * dw
 """,
             hint_marker="#.",
-            block_marker="## "
+            block_marker="## ",
         )
 
 
-def test_reference_files(test_files: tuple[pathlib.Path, pathlib.Path]):
+def test_reference_files(test_files: tuple[pathlib.Path, pathlib.Path]) -> None:
     source, target = test_files
     extensions = prepare.default_extensions()
     hint_marker, block_marker = extensions[source.suffix]

@@ -4,7 +4,7 @@ import pathlib
 from homework import prepare
 
 
-def test_produces_assignment(tmp_path: pathlib.Path):
+def test_produces_assignment(tmp_path: pathlib.Path) -> None:
     (tmp_path / "source.py").write_text("""## homework:replace:on
 #.dw =
 #.w =
@@ -21,7 +21,7 @@ w =
     )
 
 
-def test_it_uses_default_extensions(tmp_path: pathlib.Path):
+def test_it_uses_default_extensions(tmp_path: pathlib.Path) -> None:
     (tmp_path / "source.py").write_text("""## homework:replace:on
 #.dw =
 #.w =
@@ -38,7 +38,7 @@ w =
     )
 
 
-def test_handles_files_with_extensions_from_source_dir(tmp_path: pathlib.Path):
+def test_handles_files_with_extensions_from_source_dir(tmp_path: pathlib.Path) -> None:
     (tmp_path / "main.py").touch()
     (tmp_path / "first.rs").touch()
     subdir = tmp_path / "subdir"
@@ -55,7 +55,7 @@ def test_handles_files_with_extensions_from_source_dir(tmp_path: pathlib.Path):
     assert not (homework_dir / "first.rs").exists()
 
 
-def test_handles_extensions_in_file(tmp_path: pathlib.Path):
+def test_handles_extensions_in_file(tmp_path: pathlib.Path) -> None:
     (tmp_path / "source.py").write_text("""## homework:replace:on
 #.dw =
 #.w =
@@ -75,7 +75,7 @@ w =
     )
 
 
-def test_copies_unaffected_files_when_flag_is_given(tmp_path: pathlib.Path):
+def test_copies_unaffected_files_when_flag_is_given(tmp_path: pathlib.Path) -> None:
     (tmp_path / "main.py").touch()
     (tmp_path / "first.rs").touch()
     subdir = tmp_path / "subdir"
@@ -92,3 +92,21 @@ def test_copies_unaffected_files_when_flag_is_given(tmp_path: pathlib.Path):
     assert (homework_dir / "subdir" / "module.py").exists()
     assert (homework_dir / "subdir" / "data.json").exists()
     assert (homework_dir / "first.rs").exists()
+
+
+def test_ignores_based_on_patterns(tmp_path: pathlib.Path) -> None:
+    (tmp_path / "main.py").touch()
+    to_ignore = tmp_path / ".git"
+    to_ignore.mkdir()
+    (to_ignore / "first.rs").touch()
+    (to_ignore / "info").mkdir()
+    (to_ignore / "info" / "second.rs").touch()
+
+    homework_dir = prepare.prepare(
+        tmp_path,
+        extensions={".py": ("", ""), ".json": ("", "")},
+        copy_unaffected_files=True,
+        ignore_patterns=[".git"],
+    )
+    assert (homework_dir / "main.py").exists()
+    assert not (homework_dir / ".git").exists()

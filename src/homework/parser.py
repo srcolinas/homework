@@ -41,6 +41,7 @@ def _get_markers(
         )
     if line.endswith(f"{block_marker}homework:delete:on"):
         return f"{block_marker}homework:delete:off", None, None
+    return None
 
 
 def _group(
