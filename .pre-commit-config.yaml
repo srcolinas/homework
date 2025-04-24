@@ -4,7 +4,11 @@ repos:
       - id: lint
         name: lint
         description: 'Runs linter'
-        entry: bash -c 'uv run make lint'
+        entry: bash -c 'make lint'
         language: system
-        pass_filenames: false
-      
+
+      - id: test
+        name: test
+        description: 'Runs tests'
+        entry: bash -c 'make test'
+        language: system
