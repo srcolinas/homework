@@ -31,15 +31,10 @@ install:
 dev:
 	$(UV) pip install -e ".[dev]"
 
-# Set up pre-commit hooks
-setup-hooks:
-	$(UV) run pre-commit install
-
 # Setup development environment
 setup: clean
 	$(UV) venv --python $(PYTHON)
 	make dev
-	make setup-hooks
 
 # Run all tests
 test:
