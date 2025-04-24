@@ -58,5 +58,7 @@ clean:
 	rm -rf $(SRC_DIR)/__pycache__
 	rm -rf $(SRC_DIR)/**/__pycache__
 	rm -rf $(TEST_DIR)/__pycache__
+	rm -rf $(TEST_DIR)/.pytest_cache
 	rm -rf $(TEST_DIR)/**/__pycache__
 	rm -rf .mypy_cache
+	rm -rf $(SRC_DIR)/homework.egg-info
