@@ -54,8 +54,6 @@ def test_handles_files_with_extensions_from_source_dir(tmp_path: pathlib.Path) -
     assert (homework_dir / "subdir" / "data.json").exists()
     assert not (homework_dir / "first.rs").exists()
 
-def test():
-    pass
 
 def test_handles_extensions_in_file(tmp_path: pathlib.Path) -> None:
     (tmp_path / "source.py").write_text("""## homework:replace:on
