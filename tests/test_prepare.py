@@ -23,8 +23,8 @@ w =
 
 def test_it_uses_default_extensions(tmp_path: pathlib.Path) -> None:
     (tmp_path / "source.py").write_text("""## homework:replace:on
-#.dw =
-#.w =
+# dw =
+# w =
 dw = compute_gradients()
 w = w - alpha * dw
 ## homework:replace:off""")

@@ -62,3 +62,5 @@ clean:
 	rm -rf $(TEST_DIR)/**/__pycache__
 	rm -rf .mypy_cache
 	rm -rf $(SRC_DIR)/homework.egg-info
+	rm -rf dist
+	rm -rf .vscode

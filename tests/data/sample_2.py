@@ -5,7 +5,7 @@ import time
 class TokenBuckets:
     def __init__(self, size: int, add: int, every: int = 1000):
         ## homework:replace:on
-        #.raise NotImplementedError
+        # raise NotImplementedError
         self._size = size
         self._add = add
         self._every = every
