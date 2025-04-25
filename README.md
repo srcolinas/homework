@@ -5,8 +5,8 @@ Let's say you are teaching about neural networks and you wnat your students to i
 
 ```python
 ## homework:replace:on
-#.dw = 
-#.w = 
+# dw = 
+# w = 
 dw = compute_gradients()
 w -= alpha * dw
 ## homework:replace:off
