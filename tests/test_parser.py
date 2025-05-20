@@ -32,7 +32,9 @@ def test_reference_files(test_files: tuple[pathlib.Path, pathlib.Path]) -> None:
     assert result == expected
 
 
-@pytest.fixture(params=["sample_0.py", "sample_1.py", "sample_2.py", "sample_3.tf"])
+@pytest.fixture(
+    params=["sample_0.py", "sample_1.py", "sample_2.py", "sample_3.tf", "sample_4.cfg"]
+)
 def test_files(
     request: pytest.FixtureRequest,
 ) -> Iterator[tuple[pathlib.Path, pathlib.Path]]:

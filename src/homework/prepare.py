@@ -37,7 +37,7 @@ def prepare(
 
         relative_path = source.relative_to(source_dir)
         homework = homework_dir / relative_path
-        homework.parent.mkdir(exist_ok=True)
+        homework.parent.mkdir(exist_ok=True, parents=True)
         if source.suffix in extensions:
             homework.parent.mkdir(exist_ok=True)
             source_content = source.read_text()
@@ -72,4 +72,4 @@ def default_extensions() -> dict[str, tuple[str, str]]:
     """
     Returns a mapping from extension to a tuple of (hint marker, block marker)
     """
-    return {".py": ("# ", "## "), ".tf": ("# ", "## ")}
+    return {".py": ("# ", "## "), ".tf": ("# ", "## "), ".cfg": ("# ", "## ")}
