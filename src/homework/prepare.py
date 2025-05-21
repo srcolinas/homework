@@ -72,4 +72,9 @@ def default_extensions() -> dict[str, tuple[str, str]]:
     """
     Returns a mapping from extension to a tuple of (hint marker, block marker)
     """
-    return {".py": ("# ", "## "), ".tf": ("# ", "## "), ".cfg": ("# ", "## ")}
+    return {
+        ".py": ("# ", "## "),
+        ".tf": ("# ", "## "),
+        ".cfg": ("# ", "## "),
+        ".conf": ("# ", "## "),
+    }

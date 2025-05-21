@@ -64,3 +64,7 @@ clean:
 	rm -rf $(SRC_DIR)/homework.egg-info
 	rm -rf dist
 	rm -rf .vscode
+
+publish:
+	$(UV) build
+	$(UV) publish
