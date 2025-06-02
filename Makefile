@@ -42,7 +42,7 @@ test:
 
 # Run tests with coverage report
 test-coverage:
-	$(UV) run -m pytest --cov=src/cner
+	$(UV) run -m pytest --cov=src/homework
 
 # Run formatting and type checking
 lint:

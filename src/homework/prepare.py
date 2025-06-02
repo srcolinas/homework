@@ -77,4 +77,6 @@ def default_extensions() -> dict[str, tuple[str, str]]:
         ".tf": ("# ", "## "),
         ".cfg": ("# ", "## "),
         ".conf": ("# ", "## "),
+        ".yaml": ("# ", "## "),
+        ".yml": ("# ", "## "),
     }

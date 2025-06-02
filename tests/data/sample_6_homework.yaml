@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fastapi-pod
+  labels:
+    app: fastapi-web
+spec:
+  containers:
+  - name: fastapi-ctr
+    image: fastapi-debug:latest
+    imagePullPolicy: Never
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+    ports:
+    - containerPort: 80
+    livenessProbe:
+      httpGet:
+        ## homework:start
+        path: ...
+        port: ...
+        ## homework:end
+      initialDelaySeconds: 5
+      timeoutSeconds: 1
+      periodSeconds: 10
+      failureThreshold: 3
