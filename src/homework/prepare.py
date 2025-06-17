@@ -42,9 +42,13 @@ def prepare(
             homework.parent.mkdir(exist_ok=True)
             source_content = source.read_text()
             hint_marker, block_marker = extensions[source.suffix]
-            student_content = parser.parse(
-                source_content, hint_marker=hint_marker, block_marker=block_marker
-            )
+            try:
+                student_content = parser.parse(
+                    source_content, hint_marker=hint_marker, block_marker=block_marker
+                )
+            except ValueError:
+                print(f"Error parsing {source}, will skip it")
+                continue
             homework.write_text(student_content)
         else:
             shutil.copyfile(source, homework)
