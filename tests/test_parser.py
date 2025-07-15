@@ -42,6 +42,7 @@ def test_reference_files(test_files: tuple[pathlib.Path, pathlib.Path]) -> None:
         "sample_5.conf",
         "sample_6.yaml",
         "sample_7.yml",
+        "sample_8.tf"
     ]
 )
 def test_files(
